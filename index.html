@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astro.WTF - Roblox Script</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff69b4;
+            --primary-dark: #e64da1;
+            --secondary: #f8f9fa;
+            --dark: #212529;
+            --light: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f0f;
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.3) 0%, rgba(147, 51, 234, 0.3) 100%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+        }
+        
+        .logo h1 {
+            margin-left: 15px;
+            font-size: 28px;
+            background: linear-gradient(to right, var(--primary), #f06);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mute-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .mute-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), #f06);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .script-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+        }
+        
+        .script-container h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .script-box {
+            background: rgba(15, 15, 15, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .script-code {
+            color: #f8f8f8;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .discord-section {
+            padding: 60px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 60px;
+        }
+        
+        .discord-section h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .discord-section p {
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .discord-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .discord-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.3);
+        }
+        
+        .faq-section {
+            padding: 60px 0;
+        }
+        
+        .faq-section h3 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--primary);
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background: rgba(255, 105, 180, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .script-code {
+                font-size: 14px;
+            }
+        }
+        
+        /* Glowing effect */
+        .glow {
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <audio id="bgMusic" loop>
+        <source src="https://github.com/Justanewplayer19/Astro.WTF/raw/refs/heads/main/MKTO%20-%20Classic%20(Official%20Video).mp3" type="audio/mp3">
+    </audio>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="https://github.com/Justanewplayer19/Astro.WTF/blob/main/3babe9f0f8e0a96e3656595d9bd02461.png?raw=true" alt="Astro.WTF Logo">
+                <h1>Astro.WTF</h1>
+            </div>
+            
+            <div class="audio-controls">
+                <div class="volume-container">
+                    <button class="mute-btn" id="muteBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                    </button>
+                    <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-slider" id="volumeSlider">
+                </div>
+            </div>
+        </header>
+        
+        <section class="hero">
+            <h2>Elevate Your Roblox Experience</h2>
+            <p>Get access to our powerful Roblox script and share it with your friends. Enhance your gameplay with our cutting-edge features.</p>
+            
+            <div class="script-container glow">
+                <h3>Copy the Script</h3>
+                <div class="script-box">
+                    <div class="script-code" id="scriptCode">W.I.P</div>
+                    <button class="copy-btn" id="copyBtn">Copy</button>
+                </div>
+                <p>Paste this loadstring in your Roblox executor to use our script.</p>
+            </div>
+        </section>
+        
+        <section class="discord-section">
+            <h3>Join Our Community</h3>
+            <p>Connect with other users, get support, and stay updated with the latest features and updates.</p>
+            <a href="https://discord.gg/x2wvP8zZeR" class="discord-btn" target="_blank">Join Discord</a>
+        </section>
+        
+        <section class="faq-section">
+            <h3>Frequently Asked Questions</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">How do I use the script?</div>
+                <div class="faq-answer">
+                    <p>To use our script, you need to:</p>
+                    <ol>
+                        <li>Copy the loadstring provided on this website</li>
+                        <li>Open your Roblox executor</li>
+                        <li>Paste the loadstring into the executor</li>
+                        <li>Execute the script and enjoy the features!</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is this script safe to use?</div>
+                <div class="faq-answer">
+                    <p>Yes, our script is safe to use. We prioritize user safety and ensure that our script doesn't contain any harmful code. However, always use scripts at your own risk and make sure to use a reliable executor.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Which games does this script support?</div>
+                <div class="faq-answer">
+                    <p>Our script supports a wide range of popular Roblox games. For a complete list of supported games, please join our Discord server where we maintain an updated list of compatible games.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How often do you update the script?</div>
+                <div class="faq-answer">
+                    <p>We regularly update our script to ensure compatibility with the latest Roblox updates and to add new features. Join our Discord server to stay informed about the latest updates and changes.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">I'm experiencing issues with the script. What should I do?</div>
+                <div class="faq-answer">
+                    <p>If you're experiencing any issues with our script, please join our Discord server and report the problem in the support channel. Our team will assist you as soon as possible.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Astro.WTF. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Background music controls
+        const bgMusic = document.getElementById('bgMusic');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        
+        // Set initial volume
+        bgMusic.volume = 0.5;
+        
+        // Play music when user interacts with the page
+        document.addEventListener('click', function() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(error => {
+                    console.log('Autoplay prevented:', error);
+                });
+            }
+        }, { once: true });
+        
+        // Mute/unmute button
+        muteBtn.addEventListener('click', function() {
+            if (bgMusic.muted) {
+                bgMusic.muted = false;
+                muteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                `;
+            } else {
+                bgMusic.muted = true;
+                muteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                `;
+            }
+        });
+        
+        // Volume slider
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+            if (parseFloat(this.value) === 0) {
+                bgMusic.muted = true;
+                muteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                `;
+            } else if (bgMusic.muted) {
+                bgMusic.muted = false;
+                muteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                `;
+            }
+        });
+        
+        // Copy script button
+        const copyBtn = document.getElementById('copyBtn');
+        const scriptCode = document.getElementById('scriptCode');
+        
+        copyBtn.addEventListener('click', function() {
+            const textArea = document.createElement('textarea');
+            textArea.value = scriptCode.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+            }, 2000);
+        });
+        
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Close all other FAQs
+                faqQuestions.forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+                
+                // Toggle current FAQ
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+        
+        // Make sure music loops
+        bgMusic.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+    </script>
+</body>
+</html>
